@@ -154,9 +154,6 @@ abstract class Controller {
             $result->method = 'Index';
         }
 
-        die('here?');
-        require_once 'dbase.php';
-
         return $result;
     }
 }
