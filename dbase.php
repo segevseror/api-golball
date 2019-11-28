@@ -2,8 +2,8 @@
 
 $servername = "localhost";
 $dbname = 'golball';
-$username = "root";
-$password = "";
+$username = "CLEARDB_DATABASE_URL";
+$password = "123321";
 
 try {
     $conn = new PDO("mysql:host=$servername;dbname=".$dbname, $username, $password);
