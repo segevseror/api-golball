@@ -153,6 +153,9 @@ abstract class Controller {
         } else {
             $result->method = 'Index';
         }
+
+        require 'dbase.php';
+
         return $result;
     }
 }
