@@ -154,6 +154,8 @@ abstract class Controller {
             $result->method = 'Index';
         }
 
+        require_once 'dbase.php';
+
         return $result;
     }
 }
