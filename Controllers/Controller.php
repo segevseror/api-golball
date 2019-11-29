@@ -153,7 +153,6 @@ abstract class Controller {
         } else {
             $result->method = 'Index';
         }
-
         return $result;
     }
 }
