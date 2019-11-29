@@ -4,19 +4,15 @@ require 'vendor/autoload.php';
 
 require_once 'Controllers/Controller.php';
 
+
 $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
-
-   
     $r->addRoute('GET', '/', 'Main/HomeController@Index');
-
     $r->addGroup('/user', function (FastRoute\RouteCollector $r) {
-        $r->addRoute('POST', '/register', 'Main/userConroller@RegisterUser');
-        $r->addRoute('GET', '/listuser', 'Main/userConroller@getUsers');
+        $r->addRoute('POST', '/adduser', 'Main/userConroller@RegisterUser');
+        $r->addRoute('GET', '/getusers', 'Main/userConroller@getUsers');
     });
 
  
-
-
 });
 
 // Fetch method and URI from somewhere
@@ -30,6 +26,9 @@ if (false !== $pos = strpos($uri, '?')) {
 
 $uri = rawurldecode($uri);
 
+if($_SERVER['HTTP_HOST'] != "ball-app.x"){
+    $uri = '/ben-api/api-golball/';
+}
 
 $routeInfo = $dispatcher->dispatch($httpMethod, $uri);
 

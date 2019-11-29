@@ -8,7 +8,8 @@ class userConroller extends \Controllers\Controller{
     }
 
     public function RegisterUser(){
-        global $db;
+  
+        global $conn;
         $userName = $_POST['username'];
         $pass = $_POST['password'];
         $phone = $_POST['phone'];
@@ -27,19 +28,23 @@ class userConroller extends \Controllers\Controller{
             if(!$phone){
                 $phone = '00';
             };
+        
             //checkif username is exists;
-            $checkUser = pg_query($db ,"SELECT id FROM users WHERE username = '$userName'");
-            if(pg_affected_rows($checkUser)){
+            $checkUser = $conn->prepare("SELECT id FROM users WHERE username = :username");
+            $checkUser->execute([':username' => $userName]);
+            if(!empty($checkUser->fetch())){
                 echo json_encode(['act' => false , 'message' => 'the username is exists']);
                 return false;
             }else{
-
-                $result = pg_query($db, "INSERT INTO users(username , pass , phone ) VALUES('$userName', '$pass' , '$phone')");
-                if($result){
-                    $user = pg_fetch_array(pg_query($db ,"SELECT id,username FROM users WHERE username = '$userName'"));
+                $adduser = $conn->prepare("INSERT INTO users(username , pass , phone ) VALUES(:username , :pass , :phone)");
+                $adduser->execute([':username' => $userName , ':pass' => $pass , ':phone' => $phone]);
+                if($adduser->rowCount() > 0){
+                    $getuser = $conn->prepare("SELECT id,username FROM users WHERE username = :username ");
+                    $getuser->execute([':username' => $userName]);
+                    $getuser = $getuser->fetch();
                     echo json_encode(['act' => true , 'data' => [
-                        'id' => $user['id'],
-                        'username' => $user['username']
+                        'id' => $getuser['id'],
+                        'username' => $getuser['username']
                     ]]);
                     return true;
                 }else{
@@ -56,17 +61,18 @@ class userConroller extends \Controllers\Controller{
     }
 
     public function getUsers(){
-        global $db;
+        global $conn;
 
-        $result = pg_query('SELECT id,username FROM users');
-        $list = pg_fetch_all($result);
-        echo json_encode($list);
+        $users = $conn->prepare('SELECT id,username FROM users');
+        $users->execute();
+        $userArr = array();
+        while($user = $users->fetchAll()){
+            $userArr += $user;
+        };
+        echo json_encode($userArr);
         return 'true';
 
     }
     public function Index(){
-        var_dump($_POST);
-        $arr =['segev' ,'seror'];
-        echo json_encode($arr);
     }
 }

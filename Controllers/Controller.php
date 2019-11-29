@@ -4,73 +4,10 @@ namespace Controllers;
 
 abstract class Controller {
     protected $set;
-    protected static $inst = null;
-    protected $get;
-    protected $post;
-    protected $params;
     protected function __construct($params = []){
-        global $set;
-        $this->set = $set;
-        $this->params = $params;
-        $set->lang="HEB";
-        $set->webLang = "HEB";
     }
 
-    protected function AdminHeader() {
-        adminHeader();
-    }
 
-    protected function showAdminTree() {
-        showAdminTree($this->set->get['act']);
-    }
-
-    public function theme($page,$data = []) {
-        $html = view('header',$data);
-        $html .= view($page,$data);
-        $html .= view('footer',$data);
-        echo $html;
-    }
-
-    public function render($page , $data = [],$theme = 'default') {
-        global $set, $query;
-        require_once('orderClass.php');
-        $headerData['menuHeaderSlider'] = getMainCategoryData();
-        $headerData['user'] = getUserUSA();
-        $headerData['query'] = $query;
-        $this->cart = new \orderClass;
-        $cart = $this->cart->getCart();
-        $headerData['countCartItems']= count($cart['items']);
- 
-        
-        $data = array_merge(['user'=>$headerData['user']] ,$data);
-      
-     
-
-        $html = '';
-        $html .= $this->view($theme.'/shared/header',$headerData);
-        $html .= $this->view($theme.'/'.$page, $data );
-        $html .= $this->view($theme.'/shared/footer',$data);
-        echo $html;
-    }
-    public function gettempl($page , $data = [],$theme = 'default') {
-        global $set;
-        
-        $html = $this->view($theme.'/'.$page,$data);
-        return $html;
-    }
-
-    public function view(string $___, array $data) : string
-    {
-        GLOBAL $set;
-        extract($data);
-        //
-        ob_start();
-        require 'templ/'.$___.'.php';
-        $result = ob_get_contents();
-        ob_end_clean();
-        return $result;
-    }
-       
 
     public static function Load($controller,$params = []) {
         $t = explode("/",$controller);
