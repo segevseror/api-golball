@@ -14,6 +14,6 @@ class HomeController extends \Controllers\Controller{
      foreach(pg_fetch_all($result) as $user){
          echo $user['username'];
      }
-        echo ' successfully completed';
+        echo 'successfully completed';
     }
 }

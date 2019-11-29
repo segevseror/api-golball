@@ -5,17 +5,19 @@ require 'vendor/autoload.php';
 require_once 'Controllers/Controller.php';
 
 $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
+
    
     $r->addRoute('GET', '/', 'Main/HomeController@Index');
-    // {id} must be a number (\d+)
-    $r->addRoute('GET', '/user/{id:\d+}', 'get_user_handler');
-    // The /{title} suffix is optional
-    $r->addRoute('GET', '/articles/{id:\d+}[/{title}]', 'get_article_handler');
-}, [
-    'routeParser' => 'FastRoute\\RouteParser\\Std',
-    'dataGenerator' => 'FastRoute\\DataGenerator\\GroupCountBased',
-    'dispatcher' => 'FastRoute\\Dispatcher\\GroupCountBased',
-]);
+
+    $r->addGroup('/user', function (FastRoute\RouteCollector $r) {
+        $r->addRoute('POST', '/register', 'Main/userConroller@RegisterUser');
+        $r->addRoute('GET', '/listuser', 'Main/userConroller@getUsers');
+    });
+
+ 
+
+
+});
 
 // Fetch method and URI from somewhere
 $httpMethod = $_SERVER['REQUEST_METHOD'];
