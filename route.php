@@ -9,7 +9,11 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
     $r->addRoute('GET', '/', 'Main/HomeController@Index');
     $r->addGroup('/user', function (FastRoute\RouteCollector $r) {
         $r->addRoute('POST', '/adduser', 'Main/userConroller@RegisterUser');
+        $r->addRoute('POST', '/login', 'Main/userConroller@LogIn');
+
         $r->addRoute('GET', '/getusers', 'Main/userConroller@getUsers');
+        $r->addRoute('GET', '/cheackuser', 'Main/userConroller@CheackUser');
+        $r->addRoute('GET', '/logout', 'Main/userConroller@Logout');
     });
 
  
