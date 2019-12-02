@@ -12,7 +12,7 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
         $r->addRoute('POST', '/login', 'Main/userConroller@LogIn');
 
         $r->addRoute('GET', '/getusers', 'Main/userConroller@getUsers');
-        $r->addRoute('GET', '/cheackuser', 'Main/userConroller@CheackUser');
+        $r->addRoute('GET', '/cheackuser', 'Main/userConroller@CheckUser');
         $r->addRoute('GET', '/logout', 'Main/userConroller@Logout');
     });
 

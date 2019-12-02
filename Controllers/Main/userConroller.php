@@ -50,7 +50,7 @@ class userConroller extends \Controllers\Controller
         return true;
     }
 
-    public function CheackUser(){
+    public function CheckUser(){
         if(isset($_SESSION['login']) && $_SESSION['login']['id']){
             echo json_encode([
                 'act' => 'true',
